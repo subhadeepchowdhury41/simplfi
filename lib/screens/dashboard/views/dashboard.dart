@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
-import 'package:simplfi/components/budget_expense_card.dart';
+import 'package:simplfi/widgets/budget_expense_card.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key});
-
   @override
   State<Dashboard> createState() => _DashboardState();
 }
@@ -21,7 +18,7 @@ class _DashboardState extends State<Dashboard> {
             flex: 2,
             child: ListView(
               scrollDirection: Axis.horizontal,
-              children: [
+              children: const [
                 BudgetExpenseCard(budget: 0.0, categoryName: 'categoryName', expense: 0.0)
               ],
             )

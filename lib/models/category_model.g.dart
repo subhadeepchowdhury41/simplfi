@@ -16,13 +16,13 @@ class CategoryAdapter extends TypeAdapter<Category> {
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return Category()
-      ..id = fields[4] as String?
-      ..name = fields[0] as String?
-      ..item =
-          fields[1] == null ? [] : (fields[1] as List?)?.cast<CategoryItem>()
-      ..expense = fields[2] as double?
-      ..budget = fields[3] as double?;
+    return Category(
+      budget: fields[3] as double?,
+      expense: fields[2] as double?,
+      id: fields[4] as String?,
+      item: fields[1] == null ? [] : (fields[1] as List?)?.cast<CategoryItem>(),
+      name: fields[0] as String?,
+    );
   }
 
   @override
@@ -63,6 +63,7 @@ class ItemsAdapter extends TypeAdapter<CategoryItem> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return CategoryItem()
+      ..id = fields[3] as String?
       ..name = fields[0] as String?
       ..expense = fields[1] as double?
       ..budget = fields[2] as double?;
@@ -71,7 +72,9 @@ class ItemsAdapter extends TypeAdapter<CategoryItem> {
   @override
   void write(BinaryWriter writer, CategoryItem obj) {
     writer
+      ..writeByte(4)
       ..writeByte(3)
+      ..write(obj.id)
       ..writeByte(0)
       ..write(obj.name)
       ..writeByte(1)
