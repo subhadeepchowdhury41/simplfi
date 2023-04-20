@@ -19,9 +19,9 @@ class ExpenseAdapter extends TypeAdapter<Expense> {
     return Expense(
       id: fields[5] as String?,
       amount: fields[3] as double?,
-      category: fields[0] as Category?,
-      created: fields[4] as DateTime?,
-      item: fields[1] as CategoryItem?,
+      categoryId: fields[0] as String?,
+      categoryName: fields[6] as String?,
+      dateTime: fields[4] as DateTime?,
     );
   }
 
@@ -30,13 +30,13 @@ class ExpenseAdapter extends TypeAdapter<Expense> {
     writer
       ..writeByte(5)
       ..writeByte(0)
-      ..write(obj.category)
-      ..writeByte(1)
-      ..write(obj.item)
+      ..write(obj.categoryId)
+      ..writeByte(6)
+      ..write(obj.categoryName)
       ..writeByte(3)
       ..write(obj.amount)
       ..writeByte(4)
-      ..write(obj.created)
+      ..write(obj.dateTime)
       ..writeByte(5)
       ..write(obj.id);
   }

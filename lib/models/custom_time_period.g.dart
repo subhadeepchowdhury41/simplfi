@@ -1,40 +1,35 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'budget_model.dart';
+part of 'custom_time_period.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class BudgetAdapter extends TypeAdapter<Budget> {
+class CustomTimePeriodAdapter extends TypeAdapter<CustomTimePeriod> {
   @override
-  final int typeId = 4;
+  final int typeId = 2;
 
   @override
-  Budget read(BinaryReader reader) {
+  CustomTimePeriod read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return Budget()
-      ..category = fields[0] as Category?
-      ..amount = fields[1] as double?
-      ..period = fields[2] as TimePeriod?
-      ..created = fields[3] as DateTime?;
+    return CustomTimePeriod(
+      interval: fields[0] as int?,
+      period: fields[1] as TimePeriod?,
+    );
   }
 
   @override
-  void write(BinaryWriter writer, Budget obj) {
+  void write(BinaryWriter writer, CustomTimePeriod obj) {
     writer
-      ..writeByte(4)
-      ..writeByte(0)
-      ..write(obj.category)
-      ..writeByte(1)
-      ..write(obj.amount)
       ..writeByte(2)
+      ..writeByte(1)
       ..write(obj.period)
-      ..writeByte(3)
-      ..write(obj.created);
+      ..writeByte(0)
+      ..write(obj.interval);
   }
 
   @override
@@ -43,7 +38,7 @@ class BudgetAdapter extends TypeAdapter<Budget> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is BudgetAdapter &&
+      other is CustomTimePeriodAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

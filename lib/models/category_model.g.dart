@@ -22,15 +22,18 @@ class CategoryAdapter extends TypeAdapter<Category> {
       id: fields[4] as String?,
       item: fields[1] == null ? [] : (fields[1] as List?)?.cast<CategoryItem>(),
       name: fields[0] as String?,
+      created: fields[6] as DateTime?,
     );
   }
 
   @override
   void write(BinaryWriter writer, Category obj) {
     writer
-      ..writeByte(5)
+      ..writeByte(6)
       ..writeByte(4)
       ..write(obj.id)
+      ..writeByte(6)
+      ..write(obj.created)
       ..writeByte(0)
       ..write(obj.name)
       ..writeByte(1)

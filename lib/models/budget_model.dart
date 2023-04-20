@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
-import 'package:simplfi/models/time_period.dart';
 import 'package:hive/hive.dart';
+
+import 'custom_time_period.dart';
 
 part 'budget_model.g.dart';
 
@@ -13,7 +14,19 @@ class Budget extends HiveObject {
   double? amount;
 
   @HiveField(2)
-  TimePeriod? period;
+  CustomTimePeriod? period;
+
+  @HiveField(6)
+  double? salary;
+
+  @HiveField(6)
+  List<Category>? categories;
+
+  @HiveField(4)
+  DateTime? startDate;
+
+  @HiveField(5)
+  DateTime? endDate;
 
   @HiveField(3)
   DateTime? created;

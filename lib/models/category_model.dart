@@ -1,21 +1,23 @@
 import 'package:hive/hive.dart';
-import 'package:uuid/uuid.dart';
 
 part 'category_model.g.dart';
 
 @HiveType(typeId: 0, adapterName: "CategoryAdapter")
 class Category extends HiveObject {
-  
   Category({
     this.budget,
-    this.expense,
-    this.id,
-    this.item,
-    this.name
+      this.expense,
+      this.id,
+      this.item,
+      this.name,
+      this.created
   });
 
   @HiveField(4)
-  String? id = const Uuid().v4();
+  String? id;
+
+  @HiveField(6)
+  DateTime? created;
 
   @HiveField(0)
   String? name;
@@ -30,10 +32,10 @@ class Category extends HiveObject {
   double? budget;
 }
 
-@HiveType( typeId: 1, adapterName: "ItemsAdapter")
+@HiveType(typeId: 1, adapterName: "ItemsAdapter")
 class CategoryItem {
   @HiveField(3)
-  String? id = const Uuid().v4();
+  String? id;
 
   @HiveField(0)
   String? name;

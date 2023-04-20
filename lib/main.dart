@@ -5,6 +5,7 @@ import 'package:simplfi/models/budget_model.dart';
 import 'package:simplfi/models/category_model.dart';
 import 'package:simplfi/models/expense_model.dart';
 import 'package:simplfi/screens/dashboard/views/dashboard.dart';
+import 'package:simplfi/services/hive_db/boxes.dart';
 
 Future<void> main() async {
   final appDir = await getApplicationDocumentsDirectory();
@@ -14,9 +15,7 @@ Future<void> main() async {
   Hive.registerAdapter(BudgetAdapter());
   Hive.registerAdapter(ExpenseAdapter());
 
-  await Hive.openBox<CategoryAdapter>('categoryBox');
-  await Hive.openBox<BudgetAdapter>('budgetBox');
-  await Hive.openBox<ExpenseAdapter>('expenseBox');
+  await Boxes.openAllBoxes();
 
   runApp(const SimplFi());
 }
@@ -32,4 +31,3 @@ class SimplFi extends StatelessWidget {
     );
   }
 }
-

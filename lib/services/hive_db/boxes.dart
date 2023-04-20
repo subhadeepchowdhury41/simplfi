@@ -8,18 +8,17 @@ class Boxes {
   static const String _budgetBox = 'budgetBox';
   static const String _expenseBox = 'expenseBox';
 
-  Future<void> openAllBoxes() async {
-    await Hive.openBox(_categoryBox);
-    await Hive.openBox(_budgetBox);
-    await Hive.openBox(_expenseBox);
+  static Future<void> openAllBoxes() async {
+    await Hive.openBox<Category>(_categoryBox);
+    await Hive.openBox<Budget>(_budgetBox);
+    await Hive.openBox<Expense>(_expenseBox);
   }
 
-  static Box<Category> getCategories()
+  static Box<Category> getCategoriesBox()
     => Hive.box<Category>(_categoryBox);
-  static Box<Budget> getBudgets()
+  static Box<Budget> getBudgetsBox()
     => Hive.box<Budget>(_budgetBox);
-  static Box<Expense> getExpenses()
+  static Box<Expense> getExpensesBox()
     => Hive.box<Expense>(_expenseBox);
-
   
 }

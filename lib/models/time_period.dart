@@ -1,21 +1,24 @@
 import 'package:hive/hive.dart';
 
-part 'time_period.g.dart';
+import 'time_period.g.dart';
 
-@HiveType(typeId: 2)
+@HiveType(typeId: 0)
 enum TimePeriod {
   @HiveField(0)
-  weekly,
+  daily,
 
   @HiveField(1)
-  monthly,
+  weekly,
 
   @HiveField(2)
-  quaterly,
+  monthly,
 
   @HiveField(3)
-  halfyearly,
+  quaterly,
 
   @HiveField(4)
-  annualy
+  halfyearly,
+
+  @HiveField(5)
+  annual
 }
