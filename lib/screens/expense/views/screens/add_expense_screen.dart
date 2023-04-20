@@ -78,7 +78,7 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             const SizedBox(height: 16.0),
-            Text(
+            const Text(
               'Select category',
             ),
             const SizedBox(height: 8.0),
@@ -87,7 +87,7 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                 setState(() {
                   _selectedCategory = category;
                 });
-              },
+              }, categories: [],
             ),
             const SizedBox(height: 16.0),
             TextFormField(
