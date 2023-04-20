@@ -1,8 +1,8 @@
 import 'package:hive/hive.dart';
 
-import 'time_period.g.dart';
+part 'time_period.g.dart';
 
-@HiveType(typeId: 0)
+@HiveType(typeId: 7, adapterName: "TimePeriodAdapter")
 enum TimePeriod {
   @HiveField(0)
   daily,

@@ -16,7 +16,7 @@ class Budget extends HiveObject {
   @HiveField(2)
   CustomTimePeriod? period;
 
-  @HiveField(6)
+  @HiveField(7)
   double? salary;
 
   @HiveField(6)

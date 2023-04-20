@@ -1,7 +1,5 @@
 import 'package:hive/hive.dart';
 
-import 'category_model.dart';
-
 part 'expense_model.g.dart';
 
 @HiveType(typeId: 5, adapterName: "ExpenseAdapter")
