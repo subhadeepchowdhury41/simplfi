@@ -63,31 +63,31 @@ class _AddCategoryScreenState extends State<AddCategoryScreen> {
                         borderSide: BorderSide(color: Colors.transparent))),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(18.0),
-              child: DropdownButtonFormField(
-                value: 'Weekly',
-                onChanged: (val) {
-                  _categoryInterval.text = val!;
-                },
-                items: ['Daily', 'Weekly', 'Monthy', 'Yearly', 'Custom']
-                    .map((item) => DropdownMenuItem(
-                        value: item,
-                        child: Text(
-                          item,
-                          style: const TextStyle(color: Colors.black),
-                        )))
-                    .toList(),
-                style: const TextStyle(fontSize: 17),
-                decoration: const InputDecoration(
-                    contentPadding: EdgeInsets.all(0),
-                    hintText: 'Category Type',
-                    focusedBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: Colors.grey)),
-                    border: UnderlineInputBorder(
-                        borderSide: BorderSide(color: Colors.transparent))),
-              ),
-            ),
+            // Padding(
+            //   padding: const EdgeInsets.all(18.0),
+            //   child: DropdownButtonFormField(
+            //     value: 'Weekly',
+            //     onChanged: (val) {
+            //       _categoryInterval.text = val!;
+            //     },
+            //     items: ['Daily', 'Weekly', 'Monthy', 'Yearly', 'Custom']
+            //         .map((item) => DropdownMenuItem(
+            //             value: item,
+            //             child: Text(
+            //               item,
+            //               style: const TextStyle(color: Colors.black),
+            //             )))
+            //         .toList(),
+            //     style: const TextStyle(fontSize: 17),
+            //     decoration: const InputDecoration(
+            //         contentPadding: EdgeInsets.all(0),
+            //         hintText: 'Category Type',
+            //         focusedBorder: UnderlineInputBorder(
+            //             borderSide: BorderSide(color: Colors.grey)),
+            //         border: UnderlineInputBorder(
+            //             borderSide: BorderSide(color: Colors.transparent))),
+            //   ),
+            // ),
             Padding(
                 padding: const EdgeInsets.all(18.0),
                 child: TextFormField(

@@ -8,6 +8,7 @@ import 'package:simplfi/screens/dashboard/views/dashboard.dart';
 import 'package:simplfi/services/hive_db/boxes.dart';
 
 Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   final appDir = await getApplicationDocumentsDirectory();
   Hive.init(appDir.path);
 
