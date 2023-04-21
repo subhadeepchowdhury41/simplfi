@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:simplfi/screens/category/views/screens/add_category_screen.dart';
+import 'package:simplfi/screens/category/views/screens/add_categories_screen.dart';
+import 'package:simplfi/screens/expense/views/screens/add_expense_screen.dart';
 import 'package:simplfi/widgets/budget_expense_card.dart';
 
 class Dashboard extends StatefulWidget {
@@ -15,6 +16,9 @@ class _DashboardState extends State<Dashboard> {
       appBar: AppBar(),
       body: Column(
         children: [
+          /// Budget Graph -------- update button(Go to update budget screen)
+          /// Expenses  --------- add expenses button
+
           Expanded(
               flex: 2,
               child: ListView(
@@ -28,7 +32,7 @@ class _DashboardState extends State<Dashboard> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => AddCategoryScreen()));
+                                builder: (context) => AddExpenseScreen()));
                       },
                       child: Text('Add'))
                 ],

@@ -6,6 +6,8 @@ import 'package:simplfi/screens/expense/repo/expense_repository.dart';
 import 'package:simplfi/screens/expense/views/widgets/category_selector.dart';
 import 'package:uuid/uuid.dart';
 
+import '../../../../services/hive_db/hive_services.dart';
+
 class AddExpenseScreen extends StatefulWidget {
   const AddExpenseScreen({Key? key}) : super(key: key);
 
@@ -13,13 +15,8 @@ class AddExpenseScreen extends StatefulWidget {
   State<AddExpenseScreen> createState() => _AddExpenseScreenState();
 }
 
-//TODO: Textfield -> Expense Amount
-//TODO: Dropdown -> Category
-//TODO: Textfield -> description
-
-//TODO: 
-
 class _AddExpenseScreenState extends State<AddExpenseScreen> {
+  final GlobalKey<FormState> _formKey = GlobalKey();
   final TextEditingController _amountController = TextEditingController();
   final TextEditingController _noteController = TextEditingController();
   final ExpenseRepository _repository = ExpenseRepository();
@@ -65,11 +62,19 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
     );
 
     // Update category expense
-    _selectedCategory.expense += amount;
-    await _repository.updateCategory(_selectedCategory);
+    _selectedCategory.expense = (_selectedCategory.expense! + amount);
+    // await _repository.updateCategory(_selectedCategory);
 
     // Add expense
     await _repository.addExpense(expense);
+  }
+
+  Future<void> initializeCategoriesList() async {
+    try {
+      await HiveServices;
+    } catch (e) {
+      debugPrint(e.toString());
+    }
   }
 
   @override
@@ -80,47 +85,100 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            const SizedBox(height: 16.0),
-            const Text(
-              'Select category',
-            ),
-            const SizedBox(height: 8.0),
-            CategorySelector(
-              onCategorySelected: (category) {
-                setState(() {
-                  _selectedCategory = category;
-                });
-              },
-              categories: [],
-            ),
-            const SizedBox(height: 16.0),
-            TextFormField(
-              controller: _amountController,
-              keyboardType: TextInputType.number,
-              decoration: InputDecoration(
-                labelText: 'Amount',
+        child: Form(
+          key: _formKey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              /// TextField - amount
+
+              // TextFormField(
+              //   controller: _amountController,
+              //   validator: (value) {},
+              // ),
+
+              /// TextField/dropdown - category - list from Hive
+              /// TextField - description
+              /// add category button {
+              ///
+              ///
+              ///
+              ///
+              /// }
+
+              const SizedBox(height: 16.0),
+              const Text(
+                'Select category',
               ),
-            ),
-            const SizedBox(height: 8.0),
-            TextFormField(
-              controller: _noteController,
-              keyboardType: TextInputType.text,
-              decoration: InputDecoration(
-                labelText: 'Note',
+              const SizedBox(height: 8.0),
+              FormField(
+                initialValue: _selectedCategory,
+                validator: (value) {},
+                builder: (FormFieldState fieldState) {
+                  return Column(
+                    children: [
+                      Card(
+                        child: CategorySelector(
+                          onCategorySelected: (category) {
+                            setState(() {
+                              _selectedCategory = category;
+                            });
+                            fieldState.didChange(_selectedCategory);
+                          },
+                          categories: [],
+                        ),
+                      ),
+                      if (fieldState.hasError)
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 15),
+                          child: Text(
+                            fieldState.errorText!,
+                            style: const TextStyle(color: Colors.red),
+                          ),
+                        ),
+                    ],
+                  );
+                },
               ),
-            ),
-            const SizedBox(height: 16.0),
-            ElevatedButton(
-              onPressed: () {
-                _submitExpense();
-                Navigator.pop(context);
-              },
-              child: const Text('Save'),
-            ),
-          ],
+              const SizedBox(height: 16.0),
+              TextFormField(
+                validator: (value) {
+                  if (_amountController.text.isEmpty) {
+                    return 'Please enter some Amount';
+                  }
+                  return null;
+                },
+                controller: _amountController,
+                keyboardType: TextInputType.number,
+                decoration: const InputDecoration(
+                  labelText: 'Amount',
+                ),
+              ),
+              const SizedBox(height: 8.0),
+              TextFormField(
+                validator: (value) {
+                  if (_amountController.text.isEmpty) {
+                    return 'Please enter some description';
+                  }
+                  return null;
+                },
+                controller: _noteController,
+                keyboardType: TextInputType.text,
+                decoration: const InputDecoration(
+                  labelText: 'Note',
+                ),
+              ),
+              const SizedBox(height: 16.0),
+              ElevatedButton(
+                onPressed: () async {
+                  if (_formKey.currentState!.validate()) {
+                    // await _submitExpense();
+                  }
+                },
+                child: const Text('Save'),
+              ),
+            ],
+          ),
         ),
       ),
     );

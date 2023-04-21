@@ -1,8 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
-
 import 'custom_time_period.dart';
-
 part 'budget_model.g.dart';
 
 @HiveType(typeId: 4, adapterName: "BudgetAdapter")
