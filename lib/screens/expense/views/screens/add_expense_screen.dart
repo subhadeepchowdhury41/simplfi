@@ -13,6 +13,12 @@ class AddExpenseScreen extends StatefulWidget {
   State<AddExpenseScreen> createState() => _AddExpenseScreenState();
 }
 
+//TODO: Textfield -> Expense Amount
+//TODO: Dropdown -> Category
+//TODO: Textfield -> description
+
+//TODO: 
+
 class _AddExpenseScreenState extends State<AddExpenseScreen> {
   final TextEditingController _amountController = TextEditingController();
   final TextEditingController _noteController = TextEditingController();
@@ -78,7 +84,7 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             const SizedBox(height: 16.0),
-            Text(
+            const Text(
               'Select category',
             ),
             const SizedBox(height: 8.0),
@@ -88,6 +94,7 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                   _selectedCategory = category;
                 });
               },
+              categories: [],
             ),
             const SizedBox(height: 16.0),
             TextFormField(
