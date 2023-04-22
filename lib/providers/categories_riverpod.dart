@@ -29,6 +29,12 @@ class CategoryRiverpod extends StateNotifier<Category> {
     await HiveServices.saveCategory(state);
   }
 
+  /// < ---------------------------- categoryItem ---------------------------->
+
+  List<CategoryItem> getCategoryItemsList() {
+    return state.item!;
+  }
+
   void addCategoryItem(CategoryItem item) {
     Category nCategory = state;
     nCategory.item?.add(item);

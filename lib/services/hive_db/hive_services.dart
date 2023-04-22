@@ -12,7 +12,7 @@ class HiveServices {
     await budgetBox.put('budget', budget);
   }
 
-  static Future<Category?> getBudget() async {
+  static Future<Budget?> getBudget() async {
     Box budgetBox = Boxes.getBudgetsBox();
     try {
       return budgetBox.get('budget');
