@@ -8,7 +8,7 @@ import 'package:simplfi/screens/expense/repo/expense_repository.dart';
 import 'package:simplfi/screens/expense/views/widgets/category_selector.dart';
 import 'package:uuid/uuid.dart';
 
-import '../../../../services/hive_db/hive_services.dart';
+import '../../../dashboard/repo/budget_repository.dart';
 
 class AddExpenseScreen extends ConsumerStatefulWidget {
   const AddExpenseScreen({Key? key}) : super(key: key);

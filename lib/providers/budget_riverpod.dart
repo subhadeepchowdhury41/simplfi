@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:simplfi/models/budget_model.dart';
-import 'package:simplfi/services/hive_db/hive_services.dart';
+import 'package:simplfi/screens/dashboard/repo/budget_repository.dart';
 
 import '../models/category_model.dart';
 
@@ -25,24 +25,33 @@ class BudgetRiverpod extends StateNotifier<Budget?> {
     await HiveServices.saveBudget(state!);
   }
 
-  void addNewCategoryList(List<CategoryModel> catList) {
-    Budget nBudget = state!;
-    nBudget.categories = catList;
-    state = nBudget;
+  List<CategoryModel>? getCategoryList() {
+    return [...?state!.categories];
   }
 
-  void updateCategory(CategoryModel categoryModel) {
+  Future<void> addNewCategory(CategoryModel category) async {
+    state = state!.copyWith(categories: [...?state!.categories, category]);
+    await saveBudgetInLocalDB();
+  }
+
+  Future<void> updateCategory(CategoryModel categoryModel) async {
     int? index = state!.categories
         ?.indexWhere((element) => element.id == categoryModel.id);
     if (index == null) {
       return;
     }
     List<CategoryModel> list = state!.categories!;
-    // state.copyWith();
+    list[index] = categoryModel;
+    state?.copyWith(categories: list);
+
+    await saveBudgetInLocalDB();
   }
 
-  List<CategoryModel>? getCategoryList() {
-    return state!.categories;
+  Future<void> deleteCategory(CategoryModel categoryModel) async {
+    List<CategoryModel> list = state!.categories!;
+    list.removeWhere((element) => element.id == categoryModel.id);
+    state?.copyWith(categories: list);
+    await saveBudgetInLocalDB();
   }
 }
 

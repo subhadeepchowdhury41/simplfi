@@ -12,9 +12,9 @@ Future<void> main() async {
   final appDir = await getApplicationDocumentsDirectory();
   Hive.init(appDir.path);
 
-  // Hive.registerAdapter(CategoryAdapter());
-  // Hive.registerAdapter(BudgetAdapter());
-  // Hive.registerAdapter(ExpenseAdapter());
+  Hive.registerAdapter(CategoryAdapter());
+  Hive.registerAdapter(BudgetAdapter());
+  Hive.registerAdapter(ExpenseAdapter());
 
   await Boxes.openAllBoxes();
 
