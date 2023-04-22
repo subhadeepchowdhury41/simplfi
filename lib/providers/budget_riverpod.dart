@@ -12,7 +12,11 @@ class BudgetRiverpod extends StateNotifier<Budget?> {
       if (budget != null) {
         state = budget;
       } else {
-        state = Budget();
+        state = Budget(
+          amount: 0.0,
+          categories: [],
+          created: DateTime.now(),
+        );
       }
     });
   }
@@ -27,7 +31,22 @@ class BudgetRiverpod extends StateNotifier<Budget?> {
     state = nBudget;
   }
 
+  void updateCategory(CategoryModel categoryModel) {
+    int? index = state!.categories
+        ?.indexWhere((element) => element.id == categoryModel.id);
+    if (index == null) {
+      return;
+    }
+    List<CategoryModel> list = state!.categories!;
+    // state.copyWith();
+  }
+
   List<CategoryModel>? getCategoryList() {
     return state!.categories;
   }
 }
+
+StateNotifierProvider<BudgetRiverpod, Budget?> budgetProvider =
+    StateNotifierProvider<BudgetRiverpod, Budget?>((ref) {
+  return BudgetRiverpod();
+});

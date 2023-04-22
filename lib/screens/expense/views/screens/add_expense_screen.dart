@@ -1,21 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:simplfi/models/category_model.dart';
 import 'package:simplfi/models/expense_model.dart';
+import 'package:simplfi/providers/budget_riverpod.dart';
 import 'package:simplfi/screens/expense/repo/expense_repository.dart';
 import 'package:simplfi/screens/expense/views/widgets/category_selector.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../../../services/hive_db/hive_services.dart';
 
-class AddExpenseScreen extends StatefulWidget {
+class AddExpenseScreen extends ConsumerStatefulWidget {
   const AddExpenseScreen({Key? key}) : super(key: key);
 
   @override
-  State<AddExpenseScreen> createState() => _AddExpenseScreenState();
+  ConsumerState<AddExpenseScreen> createState() => _AddExpenseScreenState();
 }
 
-class _AddExpenseScreenState extends State<AddExpenseScreen> {
+class _AddExpenseScreenState extends ConsumerState<AddExpenseScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey();
   final TextEditingController _amountController = TextEditingController();
   final TextEditingController _noteController = TextEditingController();
@@ -79,6 +81,8 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
 
   @override
   Widget build(BuildContext context) {
+    List<CategoryModel> categoriesList =
+        ref.watch(budgetProvider.notifier).getCategoryList() ?? [];
     return Scaffold(
       appBar: AppBar(
         title: const Text('Add Expense'),
@@ -109,7 +113,7 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                             });
                             fieldState.didChange(_selectedCategory);
                           },
-                          categories: [],
+                          categories: categoriesList,
                         ),
                       ),
                       if (fieldState.hasError)

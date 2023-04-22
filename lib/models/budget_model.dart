@@ -27,14 +27,19 @@ class Budget extends HiveObject {
   @HiveField(6)
   DateTime? created;
 
-  Budget(
-      {this.amount,
-      this.categories,
-      this.endDate,
-      this.created,
-      this.period,
-      this.salary,
-      this.startDate});
+  @HiveField(7)
+  CustomTimePeriod? notificationPeriod;
+
+  Budget({
+    this.amount,
+    this.categories,
+    this.endDate,
+    this.created,
+    this.period,
+    this.salary,
+    this.startDate,
+    this.notificationPeriod,
+  });
 
   Budget copyWith({
     double? amount,
@@ -44,6 +49,7 @@ class Budget extends HiveObject {
     CustomTimePeriod? period,
     double? salary,
     DateTime? startDate,
+    CustomTimePeriod? notificationPeriod,
   }) {
     return Budget(
       amount: amount ?? this.amount,
@@ -53,6 +59,7 @@ class Budget extends HiveObject {
       period: period ?? this.period,
       salary: salary ?? this.salary,
       startDate: startDate ?? this.startDate,
+      notificationPeriod: notificationPeriod ?? this.notificationPeriod,
     );
   }
 }
