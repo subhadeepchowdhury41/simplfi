@@ -17,35 +17,32 @@ class BudgetAdapter extends TypeAdapter<Budget> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return Budget()
-      ..category = fields[0] as Category?
-      ..amount = fields[1] as double?
-      ..period = fields[2] as CustomTimePeriod?
-      ..salary = fields[7] as double?
-      ..categories = (fields[6] as List?)?.cast<Category>()
+      ..amount = fields[0] as double?
+      ..period = fields[1] as CustomTimePeriod?
+      ..salary = fields[2] as double?
+      ..categories = (fields[3] as List?)?.cast<CategoryModel>()
       ..startDate = fields[4] as DateTime?
       ..endDate = fields[5] as DateTime?
-      ..created = fields[3] as DateTime?;
+      ..created = fields[6] as DateTime?;
   }
 
   @override
   void write(BinaryWriter writer, Budget obj) {
     writer
-      ..writeByte(8)
-      ..writeByte(0)
-      ..write(obj.category)
-      ..writeByte(1)
-      ..write(obj.amount)
-      ..writeByte(2)
-      ..write(obj.period)
       ..writeByte(7)
+      ..writeByte(0)
+      ..write(obj.amount)
+      ..writeByte(1)
+      ..write(obj.period)
+      ..writeByte(2)
       ..write(obj.salary)
-      ..writeByte(6)
+      ..writeByte(3)
       ..write(obj.categories)
       ..writeByte(4)
       ..write(obj.startDate)
       ..writeByte(5)
       ..write(obj.endDate)
-      ..writeByte(3)
+      ..writeByte(6)
       ..write(obj.created);
   }
 

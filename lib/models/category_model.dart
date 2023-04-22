@@ -2,8 +2,8 @@ import 'package:hive/hive.dart';
 part 'category_model.g.dart';
 
 @HiveType(typeId: 0, adapterName: "CategoryAdapter")
-class Category extends HiveObject {
-  Category(
+class CategoryModel extends HiveObject {
+  CategoryModel(
       {this.budget, this.expense, this.id, this.item, this.name, this.created});
 
   @HiveField(4)

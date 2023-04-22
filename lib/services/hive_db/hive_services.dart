@@ -22,12 +22,12 @@ class HiveServices {
   }
 
   /// <-------------------------- Categories ---------------------------------->
-  static Future<void> saveCategory(Category category) async {
+  static Future<void> saveCategory(CategoryModel category) async {
     Box categoryBox = Boxes.getCategoriesBox();
     await categoryBox.put('category', category);
   }
 
-  static Future<Category?> getCategory() async {
+  static Future<CategoryModel?> getCategory() async {
     Box categoryBox = Boxes.getCategoriesBox();
     try {
       return categoryBox.get('category');

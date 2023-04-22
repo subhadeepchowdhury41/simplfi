@@ -1,5 +1,4 @@
 import 'package:hive/hive.dart';
-
 part 'time_period.g.dart';
 
 @HiveType(typeId: 7, adapterName: "TimePeriodAdapter")

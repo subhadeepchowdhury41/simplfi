@@ -19,7 +19,7 @@ class _AddCategoryScreenState extends State<AddCategoryScreen> {
 
   Future<void> onSubmit() async {
     await _repo
-        .addCategory(Category(
+        .addCategory(CategoryModel(
             budget: double.parse(_categoryBudget.text),
             expense: 0,
             name: _categoryName.text,

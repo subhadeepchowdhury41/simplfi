@@ -21,7 +21,7 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
   final TextEditingController _noteController = TextEditingController();
   final ExpenseRepository _repository = ExpenseRepository();
   late Expense _expense;
-  late Category _selectedCategory;
+  late CategoryModel _selectedCategory;
 
   @override
   void initState() {
@@ -33,7 +33,7 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
       categoryName: '',
       dateTime: DateTime.now(),
     );
-    _selectedCategory = Category(
+    _selectedCategory = CategoryModel(
       id: const Uuid().v4(),
       budget: 0,
       expense: 0,
@@ -90,22 +90,6 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              /// TextField - amount
-
-              // TextFormField(
-              //   controller: _amountController,
-              //   validator: (value) {},
-              // ),
-
-              /// TextField/dropdown - category - list from Hive
-              /// TextField - description
-              /// add category button {
-              ///
-              ///
-              ///
-              ///
-              /// }
-
               const SizedBox(height: 16.0),
               const Text(
                 'Select category',

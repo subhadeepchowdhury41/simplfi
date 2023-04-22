@@ -1,4 +1,3 @@
-import 'package:flutter/src/foundation/annotations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:simplfi/models/budget_model.dart';
 import 'package:simplfi/services/hive_db/hive_services.dart';
@@ -18,7 +17,17 @@ class BudgetRiverpod extends StateNotifier<Budget?> {
     });
   }
 
-  List<Category>? getCategoryList() {
+  Future<void> saveBudgetInLocalDB() async {
+    await HiveServices.saveBudget(state!);
+  }
+
+  void addNewCategoryList(List<CategoryModel> catList) {
+    Budget nBudget = state!;
+    nBudget.categories = catList;
+    state = nBudget;
+  }
+
+  List<CategoryModel>? getCategoryList() {
     return state!.categories;
   }
 }

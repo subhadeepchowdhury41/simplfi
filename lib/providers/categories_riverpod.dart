@@ -3,10 +3,10 @@ import 'package:simplfi/models/category_model.dart';
 import 'package:simplfi/services/hive_db/hive_services.dart';
 import 'package:uuid/uuid.dart';
 
-class CategoryRiverpod extends StateNotifier<Category> {
+class CategoryRiverpod extends StateNotifier<CategoryModel> {
   CategoryRiverpod()
       : super(
-          Category(
+          CategoryModel(
             budget: 0.0,
             expense: 0.0,
             id: const Uuid().v4(),
@@ -36,13 +36,13 @@ class CategoryRiverpod extends StateNotifier<Category> {
   }
 
   void addCategoryItem(CategoryItem item) {
-    Category nCategory = state;
+    CategoryModel nCategory = state;
     nCategory.item?.add(item);
     state = nCategory;
   }
 
   void updateCategoryItem(CategoryItem item) {
-    Category nCategory = state;
+    CategoryModel nCategory = state;
     int? index = nCategory.item?.indexWhere((element) => element.id == item.id);
     if (index == null) {
       return;
@@ -52,7 +52,7 @@ class CategoryRiverpod extends StateNotifier<Category> {
   }
 
   void removeCategoryItem(CategoryItem item) {
-    Category nCategory = state;
+    CategoryModel nCategory = state;
     nCategory.item?.removeWhere((element) => element.id == item.id);
     state = nCategory;
   }
