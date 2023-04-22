@@ -23,7 +23,7 @@ class _AddExpenseScreenState extends ConsumerState<AddExpenseScreen> {
   final TextEditingController _noteController = TextEditingController();
   final ExpenseRepository _repository = ExpenseRepository();
   late Expense _expense;
-  late CategoryModel _selectedCategory;
+  CategoryModel? _selectedCategory;
 
   @override
   void initState() {
@@ -34,12 +34,6 @@ class _AddExpenseScreenState extends ConsumerState<AddExpenseScreen> {
       categoryId: '',
       categoryName: '',
       dateTime: DateTime.now(),
-    );
-    _selectedCategory = CategoryModel(
-      id: const Uuid().v4(),
-      budget: 0,
-      expense: 0,
-      name: '',
     );
   }
 
@@ -58,31 +52,43 @@ class _AddExpenseScreenState extends ConsumerState<AddExpenseScreen> {
     final Expense expense = Expense(
       id: const Uuid().v4(),
       amount: amount,
-      categoryId: _selectedCategory.id,
-      categoryName: _selectedCategory.name,
+      categoryId: _selectedCategory!.id,
+      categoryName: _selectedCategory!.name,
       dateTime: dateTime,
+      // note: note,
     );
 
-    // Update category expense
-    _selectedCategory.expense = (_selectedCategory.expense! + amount);
-    // await _repository.updateCategory(_selectedCategory);
-
-    // Add expense
-    await _repository.addExpense(expense);
-  }
-
-  Future<void> initializeCategoriesList() async {
-    try {
-      await HiveServices;
-    } catch (e) {
-      debugPrint(e.toString());
-    }
+    // Update category expense amount
+    _selectedCategory!.expense = (_selectedCategory!.expense! + amount);
+    // Update the Category in BudgetModel
+    await ref
+        .read(budgetProvider.notifier)
+        .updateCategory(_selectedCategory!)
+        .then((value) async {
+      await ExpenseRepository().addExpense(expense).then((value) async {
+        // List<CategoryModel>? list =
+        //     ref.read(budgetProvider.notifier).getCategoryList();
+        // for (CategoryModel model in list!) {
+        //   debugPrint(
+        //       '${model.id}/ ${model.name}/ ${model.budget}/ ${model.expense}');
+        // }
+        // List<Expense>? list =
+        //     await ExpenseRepository().getAllExpenses().then((value) {
+        //   for (Expense expense in value) {
+        //     debugPrint(
+        //         '${expense.id}/ ${expense.amount}/ ${expense.categoryName}/ ${expense.dateTime}');
+        //   }
+        // });
+        Navigator.pop(context);
+      });
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     List<CategoryModel> categoriesList =
         ref.watch(budgetProvider.notifier).getCategoryList() ?? [];
+    _selectedCategory = categoriesList[0];
     return Scaffold(
       appBar: AppBar(
         title: const Text('Add Expense'),
@@ -101,7 +107,12 @@ class _AddExpenseScreenState extends ConsumerState<AddExpenseScreen> {
               const SizedBox(height: 8.0),
               FormField(
                 initialValue: _selectedCategory,
-                validator: (value) {},
+                validator: (value) {
+                  if (_selectedCategory == null) {
+                    return 'Please select a category';
+                  }
+                  return null;
+                },
                 builder: (FormFieldState fieldState) {
                   return Column(
                     children: [
@@ -160,7 +171,7 @@ class _AddExpenseScreenState extends ConsumerState<AddExpenseScreen> {
               ElevatedButton(
                 onPressed: () async {
                   if (_formKey.currentState!.validate()) {
-                    // await _submitExpense();
+                    await _submitExpense();
                   }
                 },
                 child: const Text('Save'),

@@ -1,46 +1,51 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:simplfi/models/category_model.dart';
+import 'package:simplfi/providers/budget_riverpod.dart';
 import 'package:simplfi/screens/category/repo/category_repository.dart';
 import 'package:uuid/uuid.dart';
 
-class AddCategoryScreen extends StatefulWidget {
-  const AddCategoryScreen({super.key});
+import '../../../../models/expense_model.dart';
+import '../../../expense/repo/expense_repository.dart';
 
-  @override
-  State<AddCategoryScreen> createState() => _AddCategoryScreenState();
-}
+class AddCategoryScreen extends ConsumerWidget {
+  AddCategoryScreen({super.key});
 
-class _AddCategoryScreenState extends State<AddCategoryScreen> {
   final TextEditingController _categoryName = TextEditingController();
+
   final TextEditingController _categoryBudget = TextEditingController();
+
   final TextEditingController _categoryInterval = TextEditingController();
 
   final CategoryRepository _repo = CategoryRepository();
 
-  Future<void> onSubmit() async {
-    await _repo
-        .addCategory(CategoryModel(
+  Future<void> onSubmit(WidgetRef ref) async {
+    await ref
+        .read(budgetProvider.notifier)
+        .addNewCategory(
+          CategoryModel(
             budget: double.parse(_categoryBudget.text),
             expense: 0,
             name: _categoryName.text,
-            id: const Uuid().v4()))
-        .then((value) async {
-      await _repo.getAllCategories().then((categories) {
-        print(categories);
-      });
-    });
+            id: const Uuid().v4(),
+          ),
+        )
+        .then(
+      (value) async {
+        // List<CategoryModel>? list =
+        //     ref.read(budgetProvider.notifier).getCategoryList();
+        // for (CategoryModel model in list!) {
+        //   debugPrint('${model.id}/ ${model.name}/ ${model.budget}');
+        // }
+      },
+    );
   }
 
   @override
-  void dispose() {
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        onPressed: onSubmit,
+        onPressed: () => onSubmit(ref),
         child: const Text('Save'),
       ),
       appBar: AppBar(
@@ -63,37 +68,13 @@ class _AddCategoryScreenState extends State<AddCategoryScreen> {
                         borderSide: BorderSide(color: Colors.transparent))),
               ),
             ),
-            // Padding(
-            //   padding: const EdgeInsets.all(18.0),
-            //   child: DropdownButtonFormField(
-            //     value: 'Weekly',
-            //     onChanged: (val) {
-            //       _categoryInterval.text = val!;
-            //     },
-            //     items: ['Daily', 'Weekly', 'Monthy', 'Yearly', 'Custom']
-            //         .map((item) => DropdownMenuItem(
-            //             value: item,
-            //             child: Text(
-            //               item,
-            //               style: const TextStyle(color: Colors.black),
-            //             )))
-            //         .toList(),
-            //     style: const TextStyle(fontSize: 17),
-            //     decoration: const InputDecoration(
-            //         contentPadding: EdgeInsets.all(0),
-            //         hintText: 'Category Type',
-            //         focusedBorder: UnderlineInputBorder(
-            //             borderSide: BorderSide(color: Colors.grey)),
-            //         border: UnderlineInputBorder(
-            //             borderSide: BorderSide(color: Colors.transparent))),
-            //   ),
-            // ),
             Padding(
-                padding: const EdgeInsets.all(18.0),
-                child: TextFormField(
-                  controller: _categoryBudget,
-                  decoration: const InputDecoration(hintText: 'Budget Amount'),
-                )),
+              padding: const EdgeInsets.all(18.0),
+              child: TextFormField(
+                controller: _categoryBudget,
+                decoration: const InputDecoration(hintText: 'Budget Amount'),
+              ),
+            ),
           ],
         ),
       ),
