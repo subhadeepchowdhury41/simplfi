@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:simplfi/models/budget_model.dart';
@@ -18,7 +19,7 @@ Future<void> main() async {
 
   await Boxes.openAllBoxes();
 
-  runApp(const SimplFi());
+  runApp(const ProviderScope(child: SimplFi()));
 }
 
 class SimplFi extends StatelessWidget {

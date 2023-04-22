@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
+import 'package:simplfi/models/budget_model.dart';
 import 'package:simplfi/screens/category/views/screens/add_categories_screen.dart';
 import 'package:simplfi/screens/expense/views/screens/add_expense_screen.dart';
 import 'package:simplfi/widgets/budget_expense_card.dart';
@@ -25,16 +27,24 @@ class _DashboardState extends State<Dashboard> {
                 shrinkWrap: true,
                 scrollDirection: Axis.horizontal,
                 children: [
-                  BudgetExpenseCard(
-                      budget: 0.0, categoryName: 'categoryName', expense: 0.0),
+                  StreamBuilder(
+                    stream: Hive.box<Budget>('budgetBox').watch(),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        return Text(snapshot.data.runtimeType.toString());
+                      } else {
+                        return const CircularProgressIndicator();
+                      }
+                    },
+                  ),
                   ElevatedButton(
                       onPressed: () {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => AddExpenseScreen()));
+                                builder: (context) => const AddExpenseScreen()));
                       },
-                      child: Text('Add'))
+                      child: const Text('click'))
                 ],
               )),
           Expanded(
