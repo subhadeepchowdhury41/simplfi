@@ -25,15 +25,18 @@ class BudgetAdapter extends TypeAdapter<Budget> {
       salary: fields[2] as double?,
       startDate: fields[4] as DateTime?,
       notificationPeriod: fields[7] as CustomTimePeriod?,
+      expense: fields[8] as double?,
     );
   }
 
   @override
   void write(BinaryWriter writer, Budget obj) {
     writer
-      ..writeByte(8)
+      ..writeByte(9)
       ..writeByte(0)
       ..write(obj.amount)
+      ..writeByte(8)
+      ..write(obj.expense)
       ..writeByte(1)
       ..write(obj.period)
       ..writeByte(2)

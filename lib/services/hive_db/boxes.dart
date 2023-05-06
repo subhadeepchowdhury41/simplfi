@@ -8,6 +8,12 @@ class Boxes {
   static const String _budgetBox = 'budgetBox';
   static const String _expenseBox = 'expenseBox';
 
+  static void registerBoxes() {
+    Hive.registerAdapter(CategoryAdapter());
+    Hive.registerAdapter(BudgetAdapter());
+    Hive.registerAdapter(ExpenseAdapter());
+  }
+
   static Future<void> openAllBoxes() async {
     await Hive.openBox<CategoryModel>(_categoryBox);
     await Hive.openBox<Budget>(_budgetBox);

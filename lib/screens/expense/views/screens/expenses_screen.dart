@@ -1,8 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:simplfi/models/category_model.dart';
-import 'package:simplfi/providers/budget_riverpod.dart';
+import 'package:simplfi/providers/budget_provider.dart';
+import 'package:simplfi/providers/expense_provider.dart';
 import 'package:simplfi/screens/expense/repo/expense_repository.dart';
 
 import '../../../../models/expense_model.dart';
@@ -17,19 +16,13 @@ class ExpensesScreen extends ConsumerStatefulWidget {
 
 class _ExpensesScreenState extends ConsumerState<ExpensesScreen> {
   Future<List<Expense>> _getExpensesList() async {
-    List<Expense> list = [];
-    await ExpenseRepository().getAllExpenses().then((value) {
-      debugPrint(value.length.toString());
-      list = value;
-    });
-    return list;
+    return ExpenseRepository().getAllExpenses();
   }
 
   @override
   Widget build(BuildContext context) {
-    List<CategoryModel> list =
-        ref.read(budgetProvider.notifier).getCategoryList() ?? [];
-
+    final catExpList = ref.watch(budgetProvider)!.categories;
+    final expList = ref.watch(expenseProvider);
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -42,32 +35,17 @@ class _ExpensesScreenState extends ConsumerState<ExpensesScreen> {
         actions: [
           IconButton(
             onPressed: () async {
-              await Navigator.push(
+              Navigator.push(
                 context,
                 MaterialPageRoute(
                     builder: (context) => const AddExpenseScreen()),
-              ).then((value) {
-                setState(() {});
-              });
+              );
             },
             icon: const Icon(Icons.add),
           ),
         ],
       ),
-      body: FutureBuilder(
-        future: _getExpensesList(),
-        builder: (context, snap) {
-          if (snap.connectionState == ConnectionState.waiting) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-          debugPrint('${snap.data!.length}');
-          List<Expense> expenseList = [];
-          if (snap.data != null) {
-            expenseList = getSortedList(snap.data!);
-          }
-          return Container(
+      body: Container(
             margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
             child: Column(
               children: [
@@ -113,19 +91,19 @@ class _ExpensesScreenState extends ConsumerState<ExpensesScreen> {
                 const SizedBox(height: 15),
                 ListView.builder(
                   shrinkWrap: true,
-                  itemCount: list.length,
+                  itemCount: catExpList!.length,
                   itemBuilder: (ctx, index) {
                     return Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         // Expanded(child: Text(index.toString() ?? '--')),
                         Expanded(
-                          child: Text(list[index].name ?? '--'),
+                          child: Text(catExpList[index].name ?? '--'),
                         ),
                         Expanded(
                           child: Center(
                             child: Text(
-                              list[index].budget.toString() ?? '0.0',
+                              catExpList[index].budget.toString() ?? '0.0',
                               style: const TextStyle(
                                 color: Colors.green,
                                 fontWeight: FontWeight.w500,
@@ -137,8 +115,8 @@ class _ExpensesScreenState extends ConsumerState<ExpensesScreen> {
                         Expanded(
                           child: Center(
                             child: Text(
-                              list[index].expense.toString() ?? '0.0',
-                              style: TextStyle(
+                              (catExpList[index].expense ?? 0.0).toString(),
+                              style: const TextStyle(
                                 color: Colors.redAccent,
                                 fontWeight: FontWeight.w500,
                                 fontSize: 18,
@@ -190,10 +168,9 @@ class _ExpensesScreenState extends ConsumerState<ExpensesScreen> {
                   ],
                 ),
                 const SizedBox(height: 10),
-                if (snap.data != null)
                   ListView.builder(
                     shrinkWrap: true,
-                    itemCount: snap.data!.length,
+                    itemCount: expList.length,
                     // itemExtent: 30,
                     padding: const EdgeInsets.symmetric(vertical: 5),
                     itemBuilder: (ctx, index) {
@@ -205,13 +182,13 @@ class _ExpensesScreenState extends ConsumerState<ExpensesScreen> {
                             children: [
                               Expanded(
                                 child: Text(
-                                  getDateString(expenseList[index].dateTime!),
+                                  getDateString(expList[index].dateTime!),
                                 ),
                               ),
                               Expanded(
                                 child: Center(
                                   child: Text(
-                                    expenseList[index]
+                                    expList[index]
                                             .categoryName
                                             .toString() ??
                                         '--',
@@ -225,7 +202,7 @@ class _ExpensesScreenState extends ConsumerState<ExpensesScreen> {
                               Expanded(
                                 child: Center(
                                   child: Text(
-                                    expenseList[index].amount.toString() ??
+                                    expList[index].amount.toString() ??
                                         '0.0',
                                     style: const TextStyle(
                                       color: Colors.redAccent,
@@ -242,11 +219,9 @@ class _ExpensesScreenState extends ConsumerState<ExpensesScreen> {
                       );
                     },
                   ),
-              ],
+              ]
             ),
-          );
-        },
-      ),
+          )
     );
   }
 

@@ -2,7 +2,7 @@ import 'package:simplfi/models/expense_model.dart';
 import 'package:simplfi/services/hive_db/boxes.dart';
 
 abstract class ExpenseRepositoryBluePrint {
-  Future<List<Expense>> getAllExpenses();
+  List<Expense> getAllExpenses();
   Future<Expense?> getExpense(String id);
   Future<void> addExpense(Expense expense);
   Future<void> deleteExpense(String id);
@@ -23,7 +23,7 @@ class ExpenseRepository implements ExpenseRepositoryBluePrint {
   }
 
   @override
-  Future<List<Expense>> getAllExpenses() async {
+  List<Expense> getAllExpenses() {
     return _expenseBox.values.toList();
   }
 

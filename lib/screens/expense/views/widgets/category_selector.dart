@@ -3,7 +3,7 @@ import 'package:simplfi/models/category_model.dart';
 
 class CategorySelector extends StatefulWidget {
   final List<CategoryModel> categories;
-  final ValueChanged<CategoryModel> onCategorySelected;
+  final Function(CategoryModel?) onCategorySelected;
 
   const CategorySelector({
     super.key,

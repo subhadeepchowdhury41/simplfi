@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:intl/intl.dart';
 import 'package:simplfi/models/category_model.dart';
 import 'package:simplfi/models/expense_model.dart';
-import 'package:simplfi/providers/budget_riverpod.dart';
+import 'package:simplfi/providers/budget_provider.dart';
+import 'package:simplfi/providers/expense_provider.dart';
 import 'package:simplfi/screens/expense/repo/expense_repository.dart';
 import 'package:simplfi/screens/expense/views/widgets/category_selector.dart';
 import 'package:uuid/uuid.dart';
-
-import '../../../dashboard/repo/budget_repository.dart';
 
 class AddExpenseScreen extends ConsumerStatefulWidget {
   const AddExpenseScreen({Key? key}) : super(key: key);
@@ -21,20 +19,11 @@ class _AddExpenseScreenState extends ConsumerState<AddExpenseScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey();
   final TextEditingController _amountController = TextEditingController();
   final TextEditingController _noteController = TextEditingController();
-  final ExpenseRepository _repository = ExpenseRepository();
-  late Expense _expense;
   CategoryModel? _selectedCategory;
 
   @override
   void initState() {
     super.initState();
-    _expense = Expense(
-      id: const Uuid().v4(),
-      amount: 0,
-      categoryId: '',
-      categoryName: '',
-      dateTime: DateTime.now(),
-    );
   }
 
   @override
@@ -48,38 +37,18 @@ class _AddExpenseScreenState extends ConsumerState<AddExpenseScreen> {
     final double amount = double.parse(_amountController.text.trim());
     final String note = _noteController.text.trim();
     final DateTime dateTime = DateTime.now();
-
     final Expense expense = Expense(
-      id: const Uuid().v4(),
-      amount: amount,
-      categoryId: _selectedCategory!.id,
-      categoryName: _selectedCategory!.name,
-      dateTime: dateTime,
-      // note: note,
-    );
-
-    // Update category expense amount
-    _selectedCategory!.expense = (_selectedCategory!.expense! + amount);
-    // Update the Category in BudgetModel
+        id: const Uuid().v4(),
+        amount: amount,
+        categoryId: _selectedCategory!.id,
+        categoryName: _selectedCategory!.name,
+        dateTime: dateTime);
     await ref
-        .read(budgetProvider.notifier)
-        .updateCategory(_selectedCategory!)
+        .read(expenseProvider.notifier)
+        .addExpense(expense)
         .then((value) async {
-      await ExpenseRepository().addExpense(expense).then((value) async {
-        // List<CategoryModel>? list =
-        //     ref.read(budgetProvider.notifier).getCategoryList();
-        // for (CategoryModel model in list!) {
-        //   debugPrint(
-        //       '${model.id}/ ${model.name}/ ${model.budget}/ ${model.expense}');
-        // }
-        // List<Expense>? list =
-        //     await ExpenseRepository().getAllExpenses().then((value) {
-        //   for (Expense expense in value) {
-        //     debugPrint(
-        //         '${expense.id}/ ${expense.amount}/ ${expense.categoryName}/ ${expense.dateTime}');
-        //   }
-        // });
-        Navigator.pop(context);
+      await ref.read(budgetProvider.notifier).addExpense(expense).then((value) {
+        debugPrint('Done adding');
       });
     });
   }
@@ -106,7 +75,6 @@ class _AddExpenseScreenState extends ConsumerState<AddExpenseScreen> {
               ),
               const SizedBox(height: 8.0),
               FormField(
-                initialValue: _selectedCategory,
                 validator: (value) {
                   if (_selectedCategory == null) {
                     return 'Please select a category';
@@ -119,9 +87,7 @@ class _AddExpenseScreenState extends ConsumerState<AddExpenseScreen> {
                       Card(
                         child: CategorySelector(
                           onCategorySelected: (category) {
-                            setState(() {
                               _selectedCategory = category;
-                            });
                             fieldState.didChange(_selectedCategory);
                           },
                           categories: categoriesList,

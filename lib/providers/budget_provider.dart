@@ -1,20 +1,20 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:simplfi/models/budget_model.dart';
-import 'package:simplfi/screens/category/repo/category_repository.dart';
+import 'package:simplfi/models/expense_model.dart';
 import 'package:simplfi/screens/dashboard/repo/budget_repository.dart';
-
 import '../models/category_model.dart';
 
-class BudgetRiverpod extends StateNotifier<Budget?> {
-  BudgetRiverpod() : super(null);
+class BudgetNotifier extends StateNotifier<Budget?> {
+  BudgetNotifier() : super(null);
 
   Future<void> initialize() async {
-    await HiveServices.getBudget().then((budget) {
+    await BudgetRepo.getBudget().then((budget) {
       if (budget != null) {
         state = budget;
       } else {
         state = Budget(
           amount: 0.0,
+          expense: 0.0,
           categories: [],
           created: DateTime.now(),
         );
@@ -23,16 +23,27 @@ class BudgetRiverpod extends StateNotifier<Budget?> {
   }
 
   Future<void> saveBudgetInLocalDB() async {
-    await HiveServices.saveBudget(state!);
+    await BudgetRepo.saveBudget(state!);
   }
 
   List<CategoryModel>? getCategoryList() {
     return [...?state!.categories];
   }
 
-  Future<void> addNewCategory(CategoryModel category) async {
+  Future<void> addCategory(CategoryModel category) async {
     state = state!.copyWith(categories: [...?state!.categories, category]);
-    await CategoryRepository().addCategory(category);
+    await saveBudgetInLocalDB();
+  }
+
+  Future<void> addExpense(Expense expense) async {
+    state = state!.copyWith(
+      expense: state!.expense! + expense.amount!,
+        categories: state!.categories!.map((cat) {
+      if (cat.id == expense.categoryId) {
+        cat.expense = cat.expense! + expense.amount!;
+      }
+      return cat;
+    }).toList());
     await saveBudgetInLocalDB();
   }
 
@@ -57,7 +68,6 @@ class BudgetRiverpod extends StateNotifier<Budget?> {
   }
 }
 
-StateNotifierProvider<BudgetRiverpod, Budget?> budgetProvider =
-    StateNotifierProvider<BudgetRiverpod, Budget?>((ref) {
-  return BudgetRiverpod();
+final budgetProvider = StateNotifierProvider<BudgetNotifier, Budget?>((ref) {
+  return BudgetNotifier();
 });

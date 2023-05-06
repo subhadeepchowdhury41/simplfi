@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:simplfi/models/category_model.dart';
 import 'package:simplfi/utils/extensions/color_extension.dart';
-import '../providers/budget_riverpod.dart';
+import '../providers/budget_provider.dart';
 import '../utils/app_colors.dart';
 
 class BarChartSample2 extends StatefulWidget {

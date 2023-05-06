@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
 import 'category_model.dart';
 import 'custom_time_period.dart';
@@ -8,6 +7,9 @@ part 'budget_model.g.dart';
 class Budget extends HiveObject {
   @HiveField(0)
   double? amount;
+
+  @HiveField(8)
+  double? expense;
 
   @HiveField(1)
   CustomTimePeriod? period;
@@ -39,6 +41,7 @@ class Budget extends HiveObject {
     this.salary,
     this.startDate,
     this.notificationPeriod,
+    this.expense
   });
 
   Budget copyWith({
@@ -49,6 +52,7 @@ class Budget extends HiveObject {
     CustomTimePeriod? period,
     double? salary,
     DateTime? startDate,
+    double? expense,
     CustomTimePeriod? notificationPeriod,
   }) {
     return Budget(
@@ -60,6 +64,7 @@ class Budget extends HiveObject {
       salary: salary ?? this.salary,
       startDate: startDate ?? this.startDate,
       notificationPeriod: notificationPeriod ?? this.notificationPeriod,
+      expense: expense ?? this.expense
     );
   }
 }

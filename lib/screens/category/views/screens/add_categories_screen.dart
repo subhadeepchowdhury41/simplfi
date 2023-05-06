@@ -1,44 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:simplfi/models/category_model.dart';
-import 'package:simplfi/providers/budget_riverpod.dart';
-import 'package:simplfi/screens/category/repo/category_repository.dart';
+import 'package:simplfi/providers/budget_provider.dart';
 import 'package:uuid/uuid.dart';
-
-import '../../../../models/expense_model.dart';
-import '../../../expense/repo/expense_repository.dart';
 
 class AddCategoryScreen extends ConsumerWidget {
   AddCategoryScreen({super.key});
 
   final TextEditingController _categoryName = TextEditingController();
-
   final TextEditingController _categoryBudget = TextEditingController();
-
-  final TextEditingController _categoryInterval = TextEditingController();
-
-  final CategoryRepository _repo = CategoryRepository();
+  final TextEditingController _notifyInterval = TextEditingController();
 
   Future<void> onSubmit(WidgetRef ref) async {
-    await ref
-        .read(budgetProvider.notifier)
-        .addNewCategory(
+    final catId = const Uuid().v4();
+    print(catId);
+    await ref.read(budgetProvider.notifier).addCategory(
           CategoryModel(
             budget: double.parse(_categoryBudget.text),
-            expense: 0,
+            expense: 0.0,
             name: _categoryName.text,
-            id: const Uuid().v4(),
+            id: catId,
           ),
-        )
-        .then(
-      (value) async {
-        // List<CategoryModel>? list =
-        //     ref.read(budgetProvider.notifier).getCategoryList();
-        // for (CategoryModel model in list!) {
-        //   debugPrint('${model.id}/ ${model.name}/ ${model.budget}');
-        // }
-      },
-    );
+        );
   }
 
   @override
