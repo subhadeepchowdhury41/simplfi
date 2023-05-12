@@ -7,7 +7,7 @@ import 'package:simplfi/models/expense_model.dart';
 import 'package:simplfi/providers/budget_provider.dart';
 import 'package:simplfi/providers/expense_provider.dart';
 import 'package:simplfi/screens/category/views/screens/add_categories_screen.dart';
-import '../../expense/views/screens/expenses_screen.dart';
+import 'package:simplfi/screens/expense/views/screens/add_expense_screen.dart';
 
 class Dashboard extends ConsumerStatefulWidget {
   const Dashboard({super.key});
@@ -63,10 +63,17 @@ class _DashboardState extends ConsumerState<Dashboard> {
                       Row(
                         children: [
                           IconButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) =>
+                                        const AddExpenseScreen()));
+                              },
                               icon: const Icon(Icons.poll_outlined)),
                           IconButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) => AddCategoryScreen()));
+                              },
                               icon: const Icon(
                                   Icons.dashboard_customize_outlined)),
                           IconButton(
