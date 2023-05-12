@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:simplfi/providers/budget_provider.dart';
 import 'package:simplfi/providers/expense_provider.dart';
-import 'package:simplfi/screens/expense/repo/expense_repository.dart';
-
 import '../../../../models/expense_model.dart';
 import 'add_expense_screen.dart';
 
@@ -15,10 +13,6 @@ class ExpensesScreen extends ConsumerStatefulWidget {
 }
 
 class _ExpensesScreenState extends ConsumerState<ExpensesScreen> {
-  Future<List<Expense>> _getExpensesList() async {
-    return ExpenseRepository().getAllExpenses();
-  }
-
   @override
   Widget build(BuildContext context) {
     final catExpList = ref.watch(budgetProvider)!.categories;

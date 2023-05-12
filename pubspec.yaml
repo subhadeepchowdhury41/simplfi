@@ -45,6 +45,7 @@ dependencies:
   path_provider: ^2.0.14
   intl: ^0.18.1
   flutter_riverpod: ^2.3.5
+  percent_indicator: ^4.2.3
 
 dev_dependencies:
   flutter_test:

@@ -11,10 +11,8 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final appDir = await getApplicationDocumentsDirectory();
   Hive.init(appDir.path);
-
   Boxes.registerBoxes();
   await Boxes.openAllBoxes();
-
   runApp(
     const ProviderScope(
       child: SimplFi(),
@@ -31,9 +29,8 @@ class SimplFi extends ConsumerStatefulWidget {
 
 class _SimplFiState extends ConsumerState<SimplFi> {
   Future<void> _initializeBudget() async {
-    await ref.read(budgetProvider.notifier).initialize().then((value) {
-      ref.read(expenseProvider.notifier).initializeExpenses();
-    });
+    await ref.read(budgetProvider.notifier).initialize();
+    ref.read(expenseProvider.notifier).initializeExpenses();
   }
 
   Future<void> _init() async {
