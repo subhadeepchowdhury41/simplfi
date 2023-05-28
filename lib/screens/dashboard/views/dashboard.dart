@@ -124,8 +124,9 @@ class _DashboardState extends ConsumerState<Dashboard> {
               if (index == _index) {
                 return LinearGradient(
                   colors: [
-                    // Colors.deepPurple.shade500,
-                    Colors.blue.shade900, Colors.white70,
+                    Colors.blue.shade900,
+                    Colors.deepPurple.shade500,
+                    Colors.white70,
                     Colors.white,
                   ],
                   begin: Alignment.bottomLeft,
