@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>236060093733-tj44glokn14l0kk50g64krskbqskrdh8.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.236060093733-tj44glokn14l0kk50g64krskbqskrdh8</string>
+	<key>API_KEY</key>
+	<string>AIzaSyCstXQay0NBkt922QNSEzcTdALh0nOdr4E</string>
+	<key>GCM_SENDER_ID</key>
+	<string>236060093733</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>zenifinn.simplfi</string>
+	<key>PROJECT_ID</key>
+	<string>simplfi-b126b</string>
+	<key>STORAGE_BUCKET</key>
+	<string>simplfi-b126b.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:236060093733:ios:455f318f24a56806e43ecc</string>
+</dict>
+</plist>

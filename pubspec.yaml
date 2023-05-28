@@ -46,6 +46,8 @@ dependencies:
   intl: ^0.18.1
   flutter_riverpod: ^2.3.5
   percent_indicator: ^4.2.3
+  firebase_core: ^2.13.0
+  firebase_auth: ^4.6.1
 
 dev_dependencies:
   flutter_test:

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:simplfi/models/category_model.dart';
-import 'package:simplfi/providers/budget_provider.dart';
+import 'package:simplfi/screens/dashboard/provider/budget_provider.dart';
 import 'package:uuid/uuid.dart';
 
 class AddCategoryScreen extends ConsumerWidget {

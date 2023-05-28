@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "236060093733",
+    "project_id": "simplfi-b126b",
+    "storage_bucket": "simplfi-b126b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:236060093733:android:f87430652d94af49e43ecc",
+        "android_client_info": {
+          "package_name": "zenifinn.simplfi"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "236060093733-bnil44ovssn2ec6v6g7u2gon1vb0ek7h.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCqNPyBnGC5QuKO6wN-cPcGbJbOAZuwGbo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "236060093733-bnil44ovssn2ec6v6g7u2gon1vb0ek7h.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -2,7 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:simplfi/models/budget_model.dart';
 import 'package:simplfi/models/expense_model.dart';
 import 'package:simplfi/screens/dashboard/repo/budget_repository.dart';
-import '../models/category_model.dart';
+import '../../../models/category_model.dart';
 
 class BudgetNotifier extends StateNotifier<Budget?> {
   BudgetNotifier() : super(null);

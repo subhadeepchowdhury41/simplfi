@@ -4,8 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:simplfi/models/expense_model.dart';
-import 'package:simplfi/providers/budget_provider.dart';
-import 'package:simplfi/providers/expense_provider.dart';
+import 'package:simplfi/screens/dashboard/provider/budget_provider.dart';
+import 'package:simplfi/screens/expense/provider/expense_provider.dart';
 import 'package:simplfi/screens/category/views/screens/add_categories_screen.dart';
 import 'package:simplfi/screens/expense/views/screens/add_expense_screen.dart';
 

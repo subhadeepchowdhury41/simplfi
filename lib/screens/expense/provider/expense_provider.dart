@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:simplfi/screens/dashboard/repo/budget_repository.dart';
 import 'package:simplfi/screens/expense/repo/expense_repository.dart';
-import '../models/expense_model.dart';
+import '../../../models/expense_model.dart';
 
 class ExpenseNotifier extends StateNotifier<List<Expense>> {
   ExpenseNotifier() : super([]);

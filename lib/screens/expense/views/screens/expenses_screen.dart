@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:simplfi/providers/budget_provider.dart';
-import 'package:simplfi/providers/expense_provider.dart';
+import 'package:simplfi/screens/dashboard/provider/budget_provider.dart';
+import 'package:simplfi/screens/expense/provider/expense_provider.dart';
 import '../../../../models/expense_model.dart';
 import 'add_expense_screen.dart';
 
 class ExpensesScreen extends ConsumerStatefulWidget {
   const ExpensesScreen({Key? key}) : super(key: key);
-
   @override
   ConsumerState<ExpensesScreen> createState() => _ExpensesScreenState();
 }
