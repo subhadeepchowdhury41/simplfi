@@ -1,16 +1,20 @@
 import 'package:fl_chart/fl_chart.dart';
+import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
-import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:simplfi/models/expense_model.dart';
 import 'package:simplfi/screens/dashboard/provider/budget_provider.dart';
 import 'package:simplfi/screens/expense/provider/expense_provider.dart';
 import 'package:simplfi/screens/category/views/screens/add_categories_screen.dart';
 import 'package:simplfi/screens/expense/views/screens/add_expense_screen.dart';
 
+import '../../expense/views/screens/expenses_screen.dart';
+
 class Dashboard extends ConsumerStatefulWidget {
   const Dashboard({super.key});
+
   @override
   ConsumerState<Dashboard> createState() => _DashboardState();
 }
@@ -21,6 +25,13 @@ class _DashboardState extends ConsumerState<Dashboard> {
     list.sort((a, b) => a.dateTime!.compareTo(b.dateTime!));
     return list;
   }
+  Future<void> _initializeBudget(WidgetRef ref) async {
+    await ref.read(budgetProvider.notifier).initialize().then((value) {
+      return;
+    });
+  }
+
+  int _index = 0;
 
   @override
   void initState() {
@@ -315,5 +326,55 @@ class _DashboardState extends ConsumerState<Dashboard> {
             ),
           ],
         ));
+  }
+
+  Widget _getBottomItemWidget(
+      {required int index, required String label, required IconData iconData}) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        if (_index == index)
+          ShaderMask(
+            shaderCallback: (bounds) {
+              if (index == _index) {
+                return LinearGradient(
+                  colors: [
+                    Colors.blue.shade900,
+                    Colors.deepPurple.shade500,
+                    Colors.white70,
+                    Colors.white,
+                  ],
+                  begin: Alignment.bottomLeft,
+                  end: Alignment.topRight,
+                ).createShader(bounds);
+              }
+              return const LinearGradient(colors: []).createShader(bounds);
+            },
+            child: Icon(
+              iconData,
+              size: 30,
+              color: _index == index
+                  ? Colors.white
+                  : Colors.blue.shade900, //const Color(0xFF3554EF),
+            ),
+          ),
+        if (_index != index)
+          Icon(
+            iconData,
+            size: 30,
+            color: _index == index
+                ? Colors.white
+                : Colors.blue.shade900, //const Color(0xFF3554EF),
+          ),
+        if (_index != index)
+          Text(
+            label,
+            style: TextStyle(
+              color: Colors.blue.shade900,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+      ],
+    );
   }
 }
