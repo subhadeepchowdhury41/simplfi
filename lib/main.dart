@@ -5,8 +5,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:simplfi/screens/dashboard/provider/budget_provider.dart';
 import 'package:simplfi/screens/expense/provider/expense_provider.dart';
 import 'package:simplfi/screens/dashboard/views/dashboard.dart';
-import 'package:simplfi/screens/welcome/login/login.dart';
-import 'package:simplfi/screens/welcome/signup/signup_screen.dart';
+import 'package:simplfi/screens/plaid/plaid_dashboard.dart';
 import 'package:simplfi/services/hive_db/boxes.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
@@ -36,8 +35,8 @@ class SimplFi extends ConsumerStatefulWidget {
 
 class _SimplFiState extends ConsumerState<SimplFi> {
   Future<void> _initializeBudget() async {
-    // await ref.read(budgetProvider.notifier).initialize();
-    // ref.read(expenseProvider.notifier).initializeExpenses();
+    await ref.read(budgetProvider.notifier).initialize();
+    ref.read(expenseProvider.notifier).initializeExpenses();
   }
 
   Future<void> _init() async {
@@ -55,7 +54,7 @@ class _SimplFiState extends ConsumerState<SimplFi> {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'SimplFi',
-      home: LoginScreen(),
+      home: AccountConnection(),
     );
   }
 }
