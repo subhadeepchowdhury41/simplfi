@@ -1,14 +1,17 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:simplfi/providers/auth_provider.dart';
+import 'package:simplfi/screens/dashboard/views/dashboard.dart';
 import 'package:simplfi/screens/welcome/signup/signup_screen.dart';
 
-class LoginScreen extends StatefulWidget {
+class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  ConsumerState<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _LoginScreenState extends ConsumerState<LoginScreen> {
   final _emailCtrl = TextEditingController();
   final _pswrdCtrl = TextEditingController();
   @override
@@ -67,19 +70,27 @@ class _LoginScreenState extends State<LoginScreen> {
                             borderRadius: BorderRadius.circular(13))),
                     child: const Text("Login"),
                     onPressed: () {
-                      FirebaseAuth.instance
-                          .signInWithEmailAndPassword(
+                        ref.read(authProvider.notifier)
+                          .signInWithEmailPassword(
                               email: _emailCtrl.text, password: _pswrdCtrl.text)
                           .then((user) {
                         // The user has been signed in successfully.
+                        Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const Dashboard()),
+                            (route) => false);
+                      }).catchError((err) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text(err.toString())));
                       });
                     },
                   ),
                 ),
               ),
               // Don't have an account? Sign up text
-              Padding(
-                padding: const EdgeInsets.all(16.0),
+              const Padding(
+                padding: EdgeInsets.all(16.0),
                 child: Text(
                   "Don't have an account? Sign up.",
                 ),
@@ -87,12 +98,12 @@ class _LoginScreenState extends State<LoginScreen> {
 
               // Sign up button
               GestureDetector(
-                child: Text(
+                child: const Text(
                   "Sign up",
                 ),
                 onTap: () {
                   Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => SignUpScreen()));
+                      MaterialPageRoute(builder: (context) => const SignUpScreen()));
                 },
               ),
             ],

@@ -1,14 +1,16 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:simplfi/providers/auth_provider.dart';
+import 'package:simplfi/screens/dashboard/views/dashboard.dart';
 import '../login/login.dart';
 
-class SignUpScreen extends StatefulWidget {
+class SignUpScreen extends ConsumerStatefulWidget {
   const SignUpScreen({super.key});
   @override
-  State<SignUpScreen> createState() => _SignUpScreenState();
+  ConsumerState<SignUpScreen> createState() => _SignUpScreenState();
 }
 
-class _SignUpScreenState extends State<SignUpScreen> {
+class _SignUpScreenState extends ConsumerState<SignUpScreen> {
   final _emailCtrl = TextEditingController();
   final _pswrdCtrl = TextEditingController();
   @override
@@ -23,7 +25,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               const Padding(
                 padding: EdgeInsets.all(16.0),
                 child: Text(
-                  "Login",
+                  "Signup",
                   style: TextStyle(
                     fontSize: 24.0,
                     fontWeight: FontWeight.bold,
@@ -67,11 +69,20 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             borderRadius: BorderRadius.circular(13))),
                     child: const Text("Sign up"),
                     onPressed: () {
-                      FirebaseAuth.instance
-                          .signInWithEmailAndPassword(
+                      ref
+                          .read(authProvider.notifier)
+                          .signUpWithEmailPassword(
                               email: _emailCtrl.text, password: _pswrdCtrl.text)
                           .then((user) {
-                        // The user has been signed in successfully.
+                        // The user has been signed up successfully.
+                        Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const Dashboard()),
+                            (route) => false);
+                      }).catchError((err) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text(err.toString())));
                       });
                     },
                   ),

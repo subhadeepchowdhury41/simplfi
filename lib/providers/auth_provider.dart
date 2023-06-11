@@ -20,9 +20,20 @@ class AuthNotifier extends StateNotifier<AuthUser?> {
     syncUser();
   }
 
-  Future<void> signInWithEmailPassword(String email, String password) async {
+  Future<void> signInWithEmailPassword(
+      {required String email, required String password}) async {
     await _auth
         .signInWithEmailAndPassword(email: email, password: password)
+        .then((value) {
+      syncUser();
+      debugPrint('Signed In successfully!');
+    });
+  }
+
+  Future<void> signUpWithEmailPassword(
+      {required String email, required String password}) async {
+    await _auth
+        .createUserWithEmailAndPassword(email: email, password: password)
         .then((value) {
       syncUser();
       debugPrint('Signed In successfully!');
