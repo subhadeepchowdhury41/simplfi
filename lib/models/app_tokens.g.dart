@@ -1,35 +1,30 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'auth_user.dart';
+part of 'app_tokens.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class AuthUserAdapter extends TypeAdapter<AuthUser> {
+class AppTokensAdapter extends TypeAdapter<AppTokens> {
   @override
-  final int typeId = 1;
+  final int typeId = 10;
 
   @override
-  AuthUser read(BinaryReader reader) {
+  AppTokens read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return AuthUser(
-      email: fields[1] as String?,
-      uid: fields[0] as String?,
-    );
+    return AppTokens()..finVuToken = fields[0] as String?;
   }
 
   @override
-  void write(BinaryWriter writer, AuthUser obj) {
+  void write(BinaryWriter writer, AppTokens obj) {
     writer
-      ..writeByte(2)
-      ..writeByte(0)
-      ..write(obj.uid)
       ..writeByte(1)
-      ..write(obj.email);
+      ..writeByte(0)
+      ..write(obj.finVuToken);
   }
 
   @override
@@ -38,7 +33,7 @@ class AuthUserAdapter extends TypeAdapter<AuthUser> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is AuthUserAdapter &&
+      other is AppTokensAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

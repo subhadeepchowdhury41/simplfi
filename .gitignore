@@ -10,6 +10,9 @@
 .svn/
 migrate_working_dir/
 
+/server/node_modules/
+*/*lock.json
+
 # IntelliJ related
 *.iml
 *.ipr
