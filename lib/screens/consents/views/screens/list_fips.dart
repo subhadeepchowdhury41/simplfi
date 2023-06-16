@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:simplfi/models/finvu/consent_model.dart';
 import 'package:simplfi/providers/auth_provider.dart';
+import 'package:simplfi/screens/consents/repo/consents_repo.dart';
 import 'package:simplfi/screens/consents/views/screens/consent_approve.dart';
 import 'package:simplfi/services/finvu/repo/finvu_repo.dart';
 import 'package:uuid/uuid.dart';
@@ -69,21 +71,30 @@ class _ListFipScreenState extends ConsumerState<ListFipScreen> {
                   itemBuilder: (context, index) => InkWell(
                     onTap: () async {
                       final sessionId = const Uuid().v1();
-                      final redirectUrl = 'https://simplfi.app/redirect/$sessionId';
+                      const redirectUrl =
+                          'https://simplfi.app/redirect/8768715527@finvu';
                       await FinVuRepo.sendConsentRequest(
-                        userSessionId: sessionId,
-                        redirectUrl: redirectUrl,
+                              userSessionId: sessionId,
+                              redirectUrl: redirectUrl,
                               email: ref.read(authProvider)!.email!)
-                          .then((encryptedConsent) {
+                          .then((encryptedConsent) async {
                         if (encryptedConsent == null) {
                           return;
                         }
-                        Navigator.of(context).pushReplacement(MaterialPageRoute(
-                            builder: (context) => ConsentApprovalScreen(
-                              redirectUrl: redirectUrl,
-                                  fipId: snapshot.data![index].fipId,
-                                  encryptedConsent: encryptedConsent,
-                                )));
+
+                        await ConsentsRepo.addConsent(
+                                ref.read(authProvider)!.uid!,
+                                Consent(encryptedConsent: encryptedConsent))
+                            .then((value) {
+                          Navigator.of(context)
+                              .pushReplacement(MaterialPageRoute(
+                                  builder: (context) => ConsentApprovalScreen(
+                                        phone: '',
+                                        redirectUrl: redirectUrl,
+                                        fipId: snapshot.data![index].fipId,
+                                        encryptedConsent: encryptedConsent,
+                                      )));
+                        });
                       });
                     },
                     child: Container(

@@ -31,11 +31,13 @@ class FinVuRepo {
       {required String email,
       required String redirectUrl,
       required String userSessionId}) async {
-    final token = _tokensBox.get('finVuToken');
+    final token = _tokensBox.get('finVuToken')!.finVuToken;
+    EncryptedConsent? result;
     await RestClient.sendPostReq('$_baseUrl/ConsentRequestEncrypt', body: {
       'header': FinVuReqHeader().getHeader(),
       'body': {
-        "custId": "${email.split('@')[0]}@finvu",
+        // "custId": "${email.split('@')[0]}@finvu",
+        "custId": "8768715527@finvu",
         "consentDescription": "Wealth Management Service",
         "templateName": "FINVUDEMO_TESTING",
         "userSessionId": userSessionId,
@@ -45,13 +47,13 @@ class FinVuRepo {
       'Authorization': 'Bearer: $token'
     }).then((resposne) {
       if (resposne == null) {
-        throw Exception(['Error sending consent request']);
+        return result;
       }
-      return EncryptedConsent.fromJson(resposne['body']);
+      result = EncryptedConsent.fromJson(resposne['body']);
     }).catchError((err) {
       throw err;
     });
-    return null;
+    return result;
   }
 
   static Future<Consent?> checkConsentStatus(

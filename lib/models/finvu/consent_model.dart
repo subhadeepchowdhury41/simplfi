@@ -14,7 +14,7 @@ class EncryptedConsent {
 
   factory EncryptedConsent.fromJson(Map<String, dynamic> json) {
     return EncryptedConsent(
-        encryptedRequest: json['encrytedRequest'],
+        encryptedRequest: json['encryptedRequest'],
         requestDate: json['requestDate'],
         encryptedFiuId: json['encryptedFiuId'],
         consentHandle: json['consentHandle']);

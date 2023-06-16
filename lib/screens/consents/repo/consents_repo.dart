@@ -1,14 +1,16 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:simplfi/models/finvu/consent_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:simplfi/screens/consents/provider/consents_provider.dart';
 
 class ConsentsRepo {
-  final _instance = FirebaseFirestore.instance;
-  Future<List<Consent>> getAllConsents(String uid) async {
+  static final _instance = FirebaseFirestore.instance;
+  static Future<List<Consent>> getAllConsents(String uid) async {
     final result = <Consent>[];
     await _instance
         .collection('users')
         .doc(uid)
-        .collection('cosents')
+        .collection('consents')
         .get()
         .then((consents) {
       for (var consent in consents.docs) {
@@ -23,7 +25,22 @@ class ConsentsRepo {
     return result;
   }
 
-  Future<void> addConsent(String uid, Consent consent) async {
+  static Stream<String> listenConsentStatus(String consentHandle) {
+    final snapshots =
+        _instance.collection('consents').doc(consentHandle).snapshots();
+    return snapshots.map<String>((event) => event.get('status').toString());
+  }
+
+  static Future<void> addConsent(String uid, Consent consent) async {
+    await _instance
+        .collection('consents')
+        .doc(consent.encryptedConsent!.consentHandle)
+        .set({
+      ...consent.toJosn(),
+      'status': 'PENDING',
+      'expiryDate': '',
+      'uid': uid
+    });
     await _instance
         .collection('users')
         .doc(uid)
@@ -32,12 +49,16 @@ class ConsentsRepo {
         .set({...consent.toJosn(), 'expiryDate': consent.expiryDate});
   }
 
-  Future<void> deleteConsent(String uid, String consentId) async {
+  static Future<void> deleteConsent(String uid, String consentHandle) async {
+    await _instance.collection('consents').doc(consentHandle).delete();
     await _instance
         .collection('users')
         .doc(uid)
         .collection('consents')
-        .doc(consentId)
+        .doc(consentHandle)
         .delete();
   }
 }
+
+final consentsProvider = StateNotifierProvider<ConsentsNotifier, List<Consent>>(
+    (ref) => ConsentsNotifier());
