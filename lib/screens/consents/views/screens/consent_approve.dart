@@ -30,9 +30,10 @@ class _ConsentApprovalScreenState extends ConsumerState<ConsentApprovalScreen> {
 
   Future<void> handleRedirection(String url) async {
     logWithColor(message: widget.redirectUrl, color: 'blue');
+    logWithColor(message: url.split('?')[0], color: 'blue');
     if (url.split('?')[0] != widget.redirectUrl) {
       return;
-    }                                                     
+    }
     ConsentsRepo.listenConsentStatus(widget.encryptedConsent.consentHandle!)
         .listen((event) {
       logWithColor(message: event);
@@ -43,9 +44,9 @@ class _ConsentApprovalScreenState extends ConsumerState<ConsentApprovalScreen> {
     await _webController
         .setNavigationDelegate(NavigationDelegate(onPageStarted: (url) {
       logWithColor(message: 'Page load started!', color: 'green');
+      handleRedirection(url);
     }, onPageFinished: (url) {
       logWithColor(message: 'Page load started!', color: 'green');
-      handleRedirection(url);
     }, onUrlChange: (url) {
       logWithColor(message: url.url);
     }));
